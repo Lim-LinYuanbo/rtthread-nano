@@ -820,6 +820,16 @@ struct rt_device_ops
 };
 
 /**
+ * WaitQueue structure
+ */
+struct rt_wqueue
+{
+    rt_uint32_t flag;
+    rt_list_t waiting_list;
+};
+typedef struct rt_wqueue rt_wqueue_t;
+
+/**
  * Device structure
  */
 struct rt_device
