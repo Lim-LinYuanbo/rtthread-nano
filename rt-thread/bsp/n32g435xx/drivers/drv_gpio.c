@@ -220,6 +220,17 @@ static void N32G43X_pin_mode(rt_device_t dev, rt_base_t pin, rt_base_t mode)
         return;
     }
 
+    if (index->gpio == GPIOA)
+        RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_GPIOA, ENABLE);
+    else if (index->gpio == GPIOB)
+        RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_GPIOB, ENABLE);
+    else if (index->gpio == GPIOC)
+        RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_GPIOC, ENABLE);
+    else if (index->gpio == GPIOD)
+        RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_GPIOD, ENABLE);
+    else
+        ;
+
     GPIO_InitStruct(&GPIO_InitStructure);
 
     /* Configure GPIO_InitStructure */
@@ -507,24 +518,9 @@ const static struct rt_pin_ops _N32G43X_pin_ops =
 
 int rt_hw_pin_init(void)
 {
-#if defined(RCC_GPIOA_CLK_ENABLE)
-    RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_GPIOA, ENABLE);
-#endif
-
-#if defined(RCC_GPIOB_CLK_ENABLE)
-    RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_GPIOB, ENABLE);
-#endif
-
-#if defined(RCC_GPIOC_CLK_ENABLE)
-    RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_GPIOC, ENABLE);
-#endif
-
-#if defined(RCC_GPIOD_CLK_ENABLE)
-    RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_GPIOD, ENABLE);
-#endif
-
     return rt_device_pin_register("pin", &_N32G43X_pin_ops, RT_NULL);
 }
+INIT_BOARD_EXPORT(rt_hw_pin_init);
 
 rt_inline void pin_irq_hdr(int irqno)
 {
