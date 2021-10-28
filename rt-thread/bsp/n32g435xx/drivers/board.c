@@ -139,6 +139,17 @@ void n32_msp_usart_init(void *Instance)
 }
 #endif /* BSP_USING_SERIAL */
 
+
+void n32_msp_adc_init(void *Instance)
+{
+    RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_GPIOA, ENABLE);
+    GPIO_InitType GPIO_InitStructure;
+    GPIO_InitStruct(&GPIO_InitStructure);
+    GPIO_InitStructure.Pin = GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Analog;
+    GPIO_InitPeripheral(GPIOA, &GPIO_InitStructure);
+}
+
 #ifdef RT_USING_FINSH
 #include <rtdevice.h>
 #include <finsh.h>
@@ -215,39 +226,39 @@ static void uart_test(void)
 MSH_CMD_EXPORT(uart_test, uart_test)
 #endif
 
-//#ifdef BSP_USING_ADC
-//#define ADC_DEV_NAME        "adc2"
-//#define REFER_VOLTAGE       3300
-//#define CONVERT_BITS        (1 << 12)
-//static int adc_vol_sample(int argc, char *argv[])
-//{
-//    rt_adc_device_t adc_dev;
-//    rt_uint32_t value, vol;
-//    int ch = 0;
-//    rt_err_t ret = RT_EOK;
-//
-//    adc_dev = (rt_adc_device_t)rt_device_find(ADC_DEV_NAME);
-//    if (adc_dev == RT_NULL)
-//    {
-//        rt_kprintf("adc sample run failed! can't find %s device!\n", ADC_DEV_NAME);
-//        return RT_ERROR;
-//    }
-//
-//    static const int ch_arr[] = {5, 6, 7, 13, 18};
-//    for (int i = 0; i < (sizeof(ch_arr) / sizeof(ch_arr[0])); ++i)
-//    {
-//        ch = ch_arr[i];
-//        ret = rt_adc_enable(adc_dev, ch);
-//        value = rt_adc_read(adc_dev, ch);
-//        rt_kprintf("ch=[%d] the value is :[%d] \n", ch, value);
-//        vol = value * REFER_VOLTAGE / CONVERT_BITS;
-//        rt_kprintf("ch=[%d] the voltage is :[%d] \n", ch, vol);
-//    }
-//
-//    return ret;
-//}
-//MSH_CMD_EXPORT(adc_vol_sample, adc voltage convert sample);
-//#endif
+#ifdef BSP_USING_ADC
+#define ADC_DEV_NAME        "adc"
+#define REFER_VOLTAGE       3300
+#define CONVERT_BITS        (1 << 12)
+static int adc_vol_sample(int argc, char *argv[])
+{
+    rt_adc_device_t adc_dev;
+    rt_uint32_t value, vol;
+    int ch = 0;
+    rt_err_t ret = RT_EOK;
+
+    adc_dev = (rt_adc_device_t)rt_device_find(ADC_DEV_NAME);
+    if (adc_dev == RT_NULL)
+    {
+        rt_kprintf("adc sample run failed! can't find %s device!\n", ADC_DEV_NAME);
+        return RT_ERROR;
+    }
+
+    static const int ch_arr[] = {5, 6, 7, 8, 16, 17, 18};
+    for (int i = 0; i < (sizeof(ch_arr) / sizeof(ch_arr[0])); ++i)
+    {
+        ch = ch_arr[i];
+        ret = rt_adc_enable(adc_dev, ch);
+        value = rt_adc_read(adc_dev, ch);
+        rt_kprintf("ch=[%d] the value is :[%d] \n", ch, value);
+        vol = value * REFER_VOLTAGE / CONVERT_BITS;
+        rt_kprintf("ch=[%d] the voltage is :[%d] \n", ch, vol);
+    }
+
+    return ret;
+}
+MSH_CMD_EXPORT(adc_vol_sample, adc voltage convert sample);
+#endif
 
 #endif
 

@@ -41,12 +41,10 @@
 
 static struct n32g43x_adc_config adc_config[] =
 {
-#ifdef RT_USING_ADC
     {
         "adc",
         ADC,
     },
-#endif
 };
 
 static struct n32g43x_adc adc_obj[sizeof(adc_config) / sizeof(adc_config[0])] = {0};
@@ -65,16 +63,21 @@ static void n32g43x_adc_init(struct n32g43x_adc_config *config)
     /* Enable ADC */
     ADC_Enable((ADC_Module *)config->adc_periph, ENABLE);
     /* Check ADC Ready */
-    while (ADC_GetFlagStatusNew((ADC_Module *)config->adc_periph, ADC_FLAG_RDY) == RESET)
-        ;
+    while (ADC_GetFlagStatusNew((ADC_Module *)config->adc_periph, ADC_FLAG_RDY) == RESET);
     /* Start ADC1 calibration */
     ADC_StartCalibration((ADC_Module *)config->adc_periph);
-    while (ADC_GetFlagStatusNew((ADC_Module *)config->adc_periph, ADC_FLAG_PD_RDY))
-        ;
+    while (ADC_GetFlagStatusNew((ADC_Module *)config->adc_periph, ADC_FLAG_PD_RDY));
 }
 
 static rt_err_t n32g43x_adc_enabled(struct rt_adc_device *device, rt_uint32_t channel, rt_bool_t enabled)
 {
+    if ((channel == ADC_CH_VREFINT)
+        || (channel == ADC_CH_TEMP_SENSOR)
+        || (channel == ADC_CH_VREFBUF))
+    {
+        ADC_EnableTempSensorVrefint(ENABLE);
+    }
+
     if (channel > ADC_CH_18)
     {
         return RT_EINVAL;
@@ -93,13 +96,11 @@ static rt_err_t n32g43x_adc_convert(struct rt_adc_device *device, rt_uint32_t ch
     }
     config = (struct n32g43x_adc_config *)(device->parent.user_data);
 
-    ADC_ConfigRegularChannel((ADC_Module *)config->adc_periph, channel, 1, ADC_SAMP_TIME_239CYCLES5);
+    ADC_ConfigRegularChannel((ADC_Module *)config->adc_periph, channel, 1, ADC_SAMP_TIME_28CYCLES5);
 
     ADC_EnableSoftwareStartConv((ADC_Module *)config->adc_periph, ENABLE);
 
-    while (ADC_GetFlagStatus((ADC_Module *)config->adc_periph, ADC_FLAG_ENDC) == 0)
-    {
-    }
+    while (ADC_GetFlagStatus((ADC_Module *)config->adc_periph, ADC_FLAG_ENDC) == 0);
     ADC_ClearFlag((ADC_Module *)config->adc_periph, ADC_FLAG_ENDC);
     ADC_ClearFlag((ADC_Module *)config->adc_periph, ADC_FLAG_STR);
     *value = ADC_GetDat((ADC_Module *)config->adc_periph);
@@ -115,20 +116,20 @@ static struct rt_adc_ops n32g43x_adc_ops =
 
 int rt_hw_adc_init(void)
 {
-    int i = 0;
     int result = RT_EOK;
 
-#if defined(RT_USING_ADC)
+//    RCC_EnableAHBPeriphClk(RCC_AHB_PERIPH_ADC, ENABLE);
+//    ADC_ConfigClk(ADC_CTRL3_CKMOD_PLL, RCC_ADCHCLK_DIV8);
+//    RCC_ConfigAdc1mClk(RCC_ADC1MCLK_SRC_HSI, RCC_ADC1MCLK_DIV8);
     RCC_EnableAHBPeriphClk(RCC_AHB_PERIPH_ADC, ENABLE);
-    /* Configure PC.00 PC.01 as analog input -------------------------*/
-    GPIOInit(GPIOC, GPIO_Mode_Analog, GPIO_No_Pull, GPIO_PIN_0 | GPIO_PIN_1, GPIO_NO_AF);
-#endif /* RT_USING_ADC */
+    ADC_ConfigClk(ADC_CTRL3_CKMOD_AHB, RCC_ADC1MCLK_DIV2);
+    RCC_ConfigAdc1mClk(RCC_ADC1MCLK_SRC_HSE, RCC_ADC1MCLK_DIV2);
 
-    /* RCC_ADCHCLK_DIV16*/
-    ADC_ConfigClk(ADC_CTRL3_CKMOD_AHB, RCC_ADCHCLK_DIV16);
-    RCC_ConfigAdc1mClk(RCC_ADC1MCLK_SRC_HSE, RCC_ADC1MCLK_DIV8);  //selsect HSE as RCC ADC1M CLK Source
 
-    for (i = 0; i < sizeof(adc_obj) / sizeof(adc_obj[0]); i++)
+    void n32_msp_adc_init(void *Instance);
+    n32_msp_adc_init((void *)0);
+
+    for (int i = 0; i < sizeof(adc_obj) / sizeof(adc_obj[0]); i++)
     {
         adc_obj[i].config = &adc_config[i];
         n32g43x_adc_init(&adc_config[i]);
@@ -138,7 +139,6 @@ int rt_hw_adc_init(void)
     return result;
 
 }
-
 INIT_DEVICE_EXPORT(rt_hw_adc_init);
 
 #endif /* RT_USING_ADC */
