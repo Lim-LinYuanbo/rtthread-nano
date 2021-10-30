@@ -142,17 +142,17 @@
 #define RT_SERIAL_RB_BUFSZ 64
 #define RT_USING_PIN
 #define RT_USING_ADC
-//#define RT_USING_PWM
+#define RT_USING_PWM
 
 #define BSP_USING_GPIO
 #define BSP_USING_UART
 #define BSP_USING_UART1
 #define BSP_USING_UART2
 //#define BSP_USING_UART3
-//#define BSP_USING_PWM
-//#define BSP_USING_TIM3
-//#define BSP_USING_TIM3_CH2
-//#define BSP_USING_TIM3_CH3
+#define BSP_USING_PWM
+#define BSP_USING_TIM3
+#define BSP_USING_TIM3_CH3
+#define BSP_USING_TIM3_CH4
 #define BSP_USING_ADC
 #define BSP_USING_ADC2
 

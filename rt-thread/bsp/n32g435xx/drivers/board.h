@@ -13,6 +13,8 @@
     #define __BOARD_H__
 
     #include <n32g43x.h>
+    #include "drv_common.h"
+    #include "drv_clk.h"
 
     // <o> Internal SRAM memory size[Kbytes] <8-64>
     //  <i>Default: 64

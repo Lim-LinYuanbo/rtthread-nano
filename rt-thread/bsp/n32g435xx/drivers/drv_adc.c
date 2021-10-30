@@ -69,13 +69,23 @@ static void n32g43x_adc_init(struct n32g43x_adc_config *config)
     while (ADC_GetFlagStatusNew((ADC_Module *)config->adc_periph, ADC_FLAG_PD_RDY));
 }
 
+#define VREF1P2_CTRL  (*(uint32_t*)(0x40001800+0x24))
+#define _EnVref1p2()  do{VREF1P2_CTRL|=(0x1<<13);}while(0);
+#define _DisVref1p2() do{VREF1P2_CTRL&=~(0x1<<13);}while(0);
+
+#define VREF2P0_CTRL  (*(uint32_t*)(0x40001800+0x24))
+#define _EnVref2p0()  do{VREF2P0_CTRL|=(0x1<<20);}while(0);
+#define _DisVref2p0() do{VREF2P0_CTRL&=~(0x1<<20);}while(0);
+
 static rt_err_t n32g43x_adc_enabled(struct rt_adc_device *device, rt_uint32_t channel, rt_bool_t enabled)
 {
-    if ((channel == ADC_CH_VREFINT)
-        || (channel == ADC_CH_TEMP_SENSOR)
-        || (channel == ADC_CH_VREFBUF))
+    if ((channel == ADC_CH_0)
+        || (channel == ADC_CH_17)
+        || (channel == ADC_CH_18))
     {
         ADC_EnableTempSensorVrefint(ENABLE);
+        _EnVref1p2();
+        _EnVref2p0();
     }
 
     if (channel > ADC_CH_18)

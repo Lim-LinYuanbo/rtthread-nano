@@ -36,10 +36,6 @@
 #include "drv_common.h"
 #include "board.h"
 
-#ifdef RT_USING_SERIAL
-    #include "drv_usart.h"
-#endif
-
 #ifdef RT_USING_FINSH
 #include <finsh.h>
 static void reboot(uint8_t argc, char **argv)

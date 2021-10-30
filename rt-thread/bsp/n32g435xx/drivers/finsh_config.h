@@ -16,7 +16,7 @@
 // <o>the stack of finsh thread <1-4096>
 //  <i>the stack of finsh thread
 //  <i>Default: 4096  (4096Byte)
-#define FINSH_THREAD_STACK_SIZE     512
+#define FINSH_THREAD_STACK_SIZE     1024
 // <c>using history
 //  <i>the stack of finsh thread
 #define FINSH_USING_HISTORY

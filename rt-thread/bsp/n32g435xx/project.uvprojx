@@ -419,6 +419,16 @@
               <FilePath>.\drivers\drv_usart.c</FilePath>
             </File>
             <File>
+              <FileName>drv_pwm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\drivers\drv_pwm.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_clk.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\drivers\drv_clk.c</FilePath>
+            </File>
+            <File>
               <FileName>finsh_port.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\drivers\finsh_port.c</FilePath>
@@ -692,6 +702,11 @@
               <FileName>serial.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\components\drivers\src\serial.c</FilePath>
+            </File>
+            <File>
+              <FileName>rt_drv_pwm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\components\drivers\src\rt_drv_pwm.c</FilePath>
             </File>
             <File>
               <FileName>completion.c</FileName>
