@@ -80,8 +80,8 @@ static void n32g43x_adc_init(struct n32g43x_adc_config *config)
 static rt_err_t n32g43x_adc_enabled(struct rt_adc_device *device, rt_uint32_t channel, rt_bool_t enabled)
 {
     if ((channel == ADC_CH_0)
-        || (channel == ADC_CH_17)
-        || (channel == ADC_CH_18))
+            || (channel == ADC_CH_17)
+            || (channel == ADC_CH_18))
     {
         ADC_EnableTempSensorVrefint(ENABLE);
         _EnVref1p2();

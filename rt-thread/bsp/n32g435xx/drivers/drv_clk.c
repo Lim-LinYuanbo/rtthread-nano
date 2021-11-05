@@ -28,12 +28,12 @@ void print_rcc_freq_info(void)
  */
 void SetSysClockToMSI(void)
 {
-    if(RESET == RCC_GetFlagStatus(RCC_CTRLSTS_FLAG_MSIRD))
+    if (RESET == RCC_GetFlagStatus(RCC_CTRLSTS_FLAG_MSIRD))
     {
         /* Enable MSI and Config Clock */
         RCC_ConfigMsi(RCC_MSI_ENABLE, RCC_MSI_RANGE_4M);
         /* Waits for MSI start-up */
-        while(SUCCESS != RCC_WaitMsiStable());
+        while (SUCCESS != RCC_WaitMsiStable());
     }
 
     /* Enable Prefetch Buffer */
@@ -79,17 +79,17 @@ void SetSysClockToHSI(void)
         /* Enable Prefetch Buffer */
         FLASH_PrefetchBufSet(FLASH_PrefetchBuf_EN);
 
-        if(((*(__IO uint8_t*)((UCID_BASE + 0x2))) == 0x01)
-        || ((*(__IO uint8_t*)((UCID_BASE + 0x2))) == 0x11)
-        || ((*(__IO uint8_t*)((UCID_BASE + 0x2))) == 0xFF))
+        if (((*(__IO uint8_t *)((UCID_BASE + 0x2))) == 0x01)
+                || ((*(__IO uint8_t *)((UCID_BASE + 0x2))) == 0x11)
+                || ((*(__IO uint8_t *)((UCID_BASE + 0x2))) == 0xFF))
         {
             /* Cheak if MSI is Ready */
-            if(RESET == RCC_GetFlagStatus(RCC_CTRLSTS_FLAG_MSIRD))
+            if (RESET == RCC_GetFlagStatus(RCC_CTRLSTS_FLAG_MSIRD))
             {
                 /* Enable MSI and Config Clock */
                 RCC_ConfigMsi(RCC_MSI_ENABLE, RCC_MSI_RANGE_4M);
                 /* Waits for MSI start-up */
-                while(SUCCESS != RCC_WaitMsiStable());
+                while (SUCCESS != RCC_WaitMsiStable());
 
                 msi_ready_flag = SET;
             }
@@ -114,7 +114,7 @@ void SetSysClockToHSI(void)
             /* Wait till PLL is used as system clock source */
             while (RCC_GetSysclkSrc() != 0x0C);
 
-            if(msi_ready_flag == SET)
+            if (msi_ready_flag == SET)
             {
                 /* MSI oscillator OFF */
                 RCC_ConfigMsi(RCC_MSI_DISABLE, RCC_MSI_RANGE_4M);
@@ -177,18 +177,18 @@ void SetSysClockToHSE(void)
     {
         /* Enable Prefetch Buffer */
         FLASH_PrefetchBufSet(FLASH_PrefetchBuf_EN);
-        
-        if(((*(__IO uint8_t*)((UCID_BASE + 0x2))) == 0x01)
-        || ((*(__IO uint8_t*)((UCID_BASE + 0x2))) == 0x11)
-        || ((*(__IO uint8_t*)((UCID_BASE + 0x2))) == 0xFF))
+
+        if (((*(__IO uint8_t *)((UCID_BASE + 0x2))) == 0x01)
+                || ((*(__IO uint8_t *)((UCID_BASE + 0x2))) == 0x11)
+                || ((*(__IO uint8_t *)((UCID_BASE + 0x2))) == 0xFF))
         {
             /* Cheak if MSI is Ready */
-            if(RESET == RCC_GetFlagStatus(RCC_CTRLSTS_FLAG_MSIRD))
+            if (RESET == RCC_GetFlagStatus(RCC_CTRLSTS_FLAG_MSIRD))
             {
                 /* Enable MSI and Config Clock */
                 RCC_ConfigMsi(RCC_MSI_ENABLE, RCC_MSI_RANGE_4M);
                 /* Waits for MSI start-up */
-                while(SUCCESS != RCC_WaitMsiStable());
+                while (SUCCESS != RCC_WaitMsiStable());
 
                 msi_ready_flag = SET;
             }
@@ -213,7 +213,7 @@ void SetSysClockToHSE(void)
             /* Wait till PLL is used as system clock source */
             while (RCC_GetSysclkSrc() != 0x0C);
 
-            if(msi_ready_flag == SET)
+            if (msi_ready_flag == SET)
             {
                 /* MSI oscillator OFF */
                 RCC_ConfigMsi(RCC_MSI_DISABLE, RCC_MSI_RANGE_4M);
@@ -287,8 +287,8 @@ void SetSysClockToPLL(uint32_t freq, uint8_t src)
     /* SYSCLK, HCLK, PCLK2 and PCLK1 configuration
      * -----------------------------*/
 
-    if ((src == SYSCLK_PLLSRC_HSI)         || (src == SYSCLK_PLLSRC_HSIDIV2) 
-     || (src == SYSCLK_PLLSRC_HSI_PLLDIV2) || (src == SYSCLK_PLLSRC_HSIDIV2_PLLDIV2))
+    if ((src == SYSCLK_PLLSRC_HSI)         || (src == SYSCLK_PLLSRC_HSIDIV2)
+            || (src == SYSCLK_PLLSRC_HSI_PLLDIV2) || (src == SYSCLK_PLLSRC_HSIDIV2_PLLDIV2))
     {
         /* Enable HSI */
         RCC_ConfigHsi(RCC_HSI_ENABLE);
@@ -309,27 +309,29 @@ void SetSysClockToPLL(uint32_t freq, uint8_t src)
         if ((src == SYSCLK_PLLSRC_HSIDIV2) || (src == SYSCLK_PLLSRC_HSIDIV2_PLLDIV2))
         {
             pllsrc = RCC_PLL_HSI_PRE_DIV2;
-            pllsrcclk = HSI_VALUE/2;
+            pllsrcclk = HSI_VALUE / 2;
 
-            if(src == SYSCLK_PLLSRC_HSIDIV2_PLLDIV2)
+            if (src == SYSCLK_PLLSRC_HSIDIV2_PLLDIV2)
             {
                 plldiv = RCC_PLLDIVCLK_ENABLE;
-                pllsrcclk = HSI_VALUE/4;
+                pllsrcclk = HSI_VALUE / 4;
             }
-        } else if ((src == SYSCLK_PLLSRC_HSI) || (src == SYSCLK_PLLSRC_HSI_PLLDIV2))
+        }
+        else if ((src == SYSCLK_PLLSRC_HSI) || (src == SYSCLK_PLLSRC_HSI_PLLDIV2))
         {
             pllsrc = RCC_PLL_HSI_PRE_DIV1;
             pllsrcclk = HSI_VALUE;
 
-            if(src == SYSCLK_PLLSRC_HSI_PLLDIV2)
+            if (src == SYSCLK_PLLSRC_HSI_PLLDIV2)
             {
                 plldiv = RCC_PLLDIVCLK_ENABLE;
-                pllsrcclk = HSI_VALUE/2;
+                pllsrcclk = HSI_VALUE / 2;
             }
         }
 
-    } else if ((src == SYSCLK_PLLSRC_HSE)         || (src == SYSCLK_PLLSRC_HSEDIV2) 
-            || (src == SYSCLK_PLLSRC_HSE_PLLDIV2) || (src == SYSCLK_PLLSRC_HSEDIV2_PLLDIV2))
+    }
+    else if ((src == SYSCLK_PLLSRC_HSE)         || (src == SYSCLK_PLLSRC_HSEDIV2)
+             || (src == SYSCLK_PLLSRC_HSE_PLLDIV2) || (src == SYSCLK_PLLSRC_HSEDIV2_PLLDIV2))
     {
         /* Enable HSE */
         RCC_ConfigHse(RCC_HSE_ENABLE);
@@ -350,36 +352,37 @@ void SetSysClockToPLL(uint32_t freq, uint8_t src)
         if ((src == SYSCLK_PLLSRC_HSEDIV2) || (src == SYSCLK_PLLSRC_HSEDIV2_PLLDIV2))
         {
             pllsrc = RCC_PLL_SRC_HSE_DIV2;
-            pllsrcclk = HSE_VALUE/2;
+            pllsrcclk = HSE_VALUE / 2;
 
-            if(src == SYSCLK_PLLSRC_HSEDIV2_PLLDIV2)
+            if (src == SYSCLK_PLLSRC_HSEDIV2_PLLDIV2)
             {
                 plldiv = RCC_PLLDIVCLK_ENABLE;
-                pllsrcclk = HSE_VALUE/4;
+                pllsrcclk = HSE_VALUE / 4;
             }
-        } else if ((src == SYSCLK_PLLSRC_HSE) || (src == SYSCLK_PLLSRC_HSE_PLLDIV2))
+        }
+        else if ((src == SYSCLK_PLLSRC_HSE) || (src == SYSCLK_PLLSRC_HSE_PLLDIV2))
         {
             pllsrc = RCC_PLL_SRC_HSE_DIV1;
             pllsrcclk = HSE_VALUE;
 
-            if(src == SYSCLK_PLLSRC_HSE_PLLDIV2)
+            if (src == SYSCLK_PLLSRC_HSE_PLLDIV2)
             {
                 plldiv = RCC_PLLDIVCLK_ENABLE;
-                pllsrcclk = HSE_VALUE/2;
+                pllsrcclk = HSE_VALUE / 2;
             }
         }
     }
 
-    latency = (freq/32000000);
-    
-    if(freq > 54000000)
+    latency = (freq / 32000000);
+
+    if (freq > 54000000)
     {
         pclk1div = RCC_HCLK_DIV4;
         pclk2div = RCC_HCLK_DIV2;
     }
     else
     {
-        if(freq > 27000000)
+        if (freq > 27000000)
         {
             pclk1div = RCC_HCLK_DIV2;
             pclk2div = RCC_HCLK_DIV1;
@@ -390,11 +393,11 @@ void SetSysClockToPLL(uint32_t freq, uint8_t src)
             pclk2div = RCC_HCLK_DIV1;
         }
     }
-    
-    if(((freq % pllsrcclk) == 0) && ((freq / pllsrcclk) >= 2) && ((freq / pllsrcclk) <= 32))
+
+    if (((freq % pllsrcclk) == 0) && ((freq / pllsrcclk) >= 2) && ((freq / pllsrcclk) <= 32))
     {
         pllmul = (freq / pllsrcclk);
-        if(pllmul <= 16)
+        if (pllmul <= 16)
         {
             pllmul = ((pllmul - 2) << 18);
         }
@@ -407,16 +410,16 @@ void SetSysClockToPLL(uint32_t freq, uint8_t src)
     {
         /* Cannot make a PLL multiply factor to freq. */
 //        log_info("Cannot make a PLL multiply factor to freq..\n");
-        while(1);
+        while (1);
     }
 
     /* Cheak if MSI is Ready */
-    if(RESET == RCC_GetFlagStatus(RCC_CTRLSTS_FLAG_MSIRD))
+    if (RESET == RCC_GetFlagStatus(RCC_CTRLSTS_FLAG_MSIRD))
     {
         /* Enable MSI and Config Clock */
         RCC_ConfigMsi(RCC_MSI_ENABLE, RCC_MSI_RANGE_4M);
         /* Waits for MSI start-up */
-        while(SUCCESS != RCC_WaitMsiStable());
+        while (SUCCESS != RCC_WaitMsiStable());
 
         msi_ready_flag = SET;
     }
@@ -452,7 +455,7 @@ void SetSysClockToPLL(uint32_t freq, uint8_t src)
     /* Wait till PLL is used as system clock source */
     while (RCC_GetSysclkSrc() != 0x0C);
 
-    if(msi_ready_flag == SET)
+    if (msi_ready_flag == SET)
     {
         /* MSI oscillator OFF */
         RCC_ConfigMsi(RCC_MSI_DISABLE, RCC_MSI_RANGE_4M);

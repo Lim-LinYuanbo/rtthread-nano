@@ -14,10 +14,6 @@
 
 static void ResetClockController_Config(void)
 {
-    SetSysClockToHSI();
-    SetSysClockToPLL(72000000, SYSCLK_PLLSRC_HSIDIV2_PLLDIV2);
-//    SetSysClockToPLL(108000000, SYSCLK_PLLSRC_HSIDIV2_PLLDIV2);
-    SystemCoreClockUpdate();
 }
 
 /** System Clock Configuration
@@ -150,18 +146,28 @@ void n32_msp_tim_init(void *Instance)
 {
     GPIO_InitType GPIO_InitCtlStructure;
     GPIO_InitStruct(&GPIO_InitCtlStructure);
-    TIM_Module *TIMx = (TIM_Module *)Instance;
 
-    if (TIMx == TIM3)
     {
-        RCC_EnableAPB1PeriphClk(RCC_APB1_PERIPH_TIM3, ENABLE);
-        RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_GPIOB, ENABLE);
+        RCC_EnableAPB1PeriphClk(RCC_APB1_PERIPH_TIM2 | RCC_APB1_PERIPH_TIM3, ENABLE);
+        RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_GPIOA | RCC_APB2_PERIPH_GPIOB, ENABLE);
         GPIO_InitType GPIO_InitStructure;
         GPIO_InitStruct(&GPIO_InitStructure);
-        GPIO_InitStructure.Pin = GPIO_PIN_0 | GPIO_PIN_1;
+        GPIO_InitStructure.Pin = GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2;
+        GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+        GPIO_InitStructure.GPIO_Alternate = GPIO_AF2_TIM2;
+        GPIO_InitPeripheral(GPIOA, &GPIO_InitStructure);
+        GPIO_InitStructure.Pin = GPIO_PIN_11;
+        GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+        GPIO_InitStructure.GPIO_Alternate = GPIO_AF2_TIM2;
+        GPIO_InitPeripheral(GPIOB, &GPIO_InitStructure);
+        GPIO_InitStructure.Pin = GPIO_PIN_6 | GPIO_PIN_7;
         GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
         GPIO_InitStructure.GPIO_Alternate = GPIO_AF2_TIM3;
         GPIO_InitPeripheral(GPIOA, &GPIO_InitStructure);
+        GPIO_InitStructure.Pin = GPIO_PIN_0 | GPIO_PIN_1;
+        GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+        GPIO_InitStructure.GPIO_Alternate = GPIO_AF2_TIM3;
+        GPIO_InitPeripheral(GPIOB, &GPIO_InitStructure);
     }
 }
 #endif /* BSP_USING_PWM */
@@ -305,8 +311,8 @@ static int pwm_set_test(const char *name, int ch,
 }
 static int pwm_led_sample(int argc, char *argv[])
 {
-    pwm_set_test("tim3pwm3", 3, 1000, 400);
-    pwm_set_test("tim3pwm4", 4, 1000, 600);
+    pwm_set_test("tim3pwm", 3, 1000, 400);
+    pwm_set_test("tim3pwm", 4, 1000, 600);
     return RT_EOK;
 }
 MSH_CMD_EXPORT(pwm_led_sample, pwm sample);
