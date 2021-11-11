@@ -144,11 +144,23 @@ void n32_msp_adc_init(void *Instance)
 #ifdef BSP_USING_PWM
 void n32_msp_tim_init(void *Instance)
 {
-    GPIO_InitType GPIO_InitCtlStructure;
-    GPIO_InitStruct(&GPIO_InitCtlStructure);
+    TIM_Module *TIMx = (TIM_Module *)Instance;
 
+    if (TIMx == TIM1)
     {
-        RCC_EnableAPB1PeriphClk(RCC_APB1_PERIPH_TIM2 | RCC_APB1_PERIPH_TIM3, ENABLE);
+        RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_TIM1, ENABLE);
+        RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_GPIOA, ENABLE);
+        GPIO_InitType GPIO_InitStructure;
+        GPIO_InitStruct(&GPIO_InitStructure);
+        GPIO_InitStructure.Pin = GPIO_PIN_8 | GPIO_PIN_11;
+        GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+        GPIO_InitStructure.GPIO_Alternate = GPIO_AF2_TIM1;
+        GPIO_InitPeripheral(GPIOA, &GPIO_InitStructure);
+    }
+
+    if (TIMx == TIM2)
+    {
+        RCC_EnableAPB1PeriphClk(RCC_APB1_PERIPH_TIM2, ENABLE);
         RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_GPIOA | RCC_APB2_PERIPH_GPIOB, ENABLE);
         GPIO_InitType GPIO_InitStructure;
         GPIO_InitStruct(&GPIO_InitStructure);
@@ -160,6 +172,14 @@ void n32_msp_tim_init(void *Instance)
         GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
         GPIO_InitStructure.GPIO_Alternate = GPIO_AF2_TIM2;
         GPIO_InitPeripheral(GPIOB, &GPIO_InitStructure);
+    }
+
+    if (TIMx == TIM3)
+    {
+        RCC_EnableAPB1PeriphClk(RCC_APB1_PERIPH_TIM3, ENABLE);
+        RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_GPIOA | RCC_APB2_PERIPH_GPIOB, ENABLE);
+        GPIO_InitType GPIO_InitStructure;
+        GPIO_InitStruct(&GPIO_InitStructure);
         GPIO_InitStructure.Pin = GPIO_PIN_6 | GPIO_PIN_7;
         GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
         GPIO_InitStructure.GPIO_Alternate = GPIO_AF2_TIM3;
@@ -168,6 +188,54 @@ void n32_msp_tim_init(void *Instance)
         GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
         GPIO_InitStructure.GPIO_Alternate = GPIO_AF2_TIM3;
         GPIO_InitPeripheral(GPIOB, &GPIO_InitStructure);
+    }
+
+    if (TIMx == TIM4)
+    {
+        RCC_EnableAPB1PeriphClk(RCC_APB1_PERIPH_TIM4, ENABLE);
+        RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_GPIOB, ENABLE);
+        GPIO_InitType GPIO_InitStructure;
+        GPIO_InitStruct(&GPIO_InitStructure);
+        GPIO_InitStructure.Pin = GPIO_PIN_6 | GPIO_PIN_7 | GPIO_PIN_8 | GPIO_PIN_9;
+        GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+        GPIO_InitStructure.GPIO_Alternate = GPIO_AF2_TIM4;
+        GPIO_InitPeripheral(GPIOB, &GPIO_InitStructure);
+    }
+
+    if (TIMx == TIM5)
+    {
+        RCC_EnableAPB1PeriphClk(RCC_APB1_PERIPH_TIM5, ENABLE);
+        RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_GPIOA | RCC_APB2_PERIPH_AFIO, ENABLE);
+        GPIO_InitType GPIO_InitStructure;
+        GPIO_InitStruct(&GPIO_InitStructure);
+        GPIO_InitStructure.Pin = GPIO_PIN_0;
+        GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+        GPIO_InitStructure.GPIO_Alternate = GPIO_AF1_TIM5;
+        GPIO_InitPeripheral(GPIOA, &GPIO_InitStructure);
+        GPIO_InitStructure.Pin = GPIO_PIN_1;
+        GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+        GPIO_InitStructure.GPIO_Alternate = GPIO_AF7_TIM5;
+        GPIO_InitPeripheral(GPIOA, &GPIO_InitStructure);
+        GPIO_InitStructure.Pin = GPIO_PIN_2;
+        GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+        GPIO_InitStructure.GPIO_Alternate = GPIO_AF6_TIM5;
+        GPIO_InitPeripheral(GPIOA, &GPIO_InitStructure);
+        GPIO_InitStructure.Pin = GPIO_PIN_3;
+        GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+        GPIO_InitStructure.GPIO_Alternate = GPIO_AF7_TIM5;
+        GPIO_InitPeripheral(GPIOA, &GPIO_InitStructure);
+    }
+
+    if (TIMx == TIM8)
+    {
+        RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_TIM8, ENABLE);
+        RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_GPIOC, ENABLE);
+        GPIO_InitType GPIO_InitStructure;
+        GPIO_InitStruct(&GPIO_InitStructure);
+        GPIO_InitStructure.Pin = GPIO_PIN_6 | GPIO_PIN_7 | GPIO_PIN_8 | GPIO_PIN_9;
+        GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+        GPIO_InitStructure.GPIO_Alternate = GPIO_AF6_TIM8;
+        GPIO_InitPeripheral(GPIOC, &GPIO_InitStructure);
     }
 }
 #endif /* BSP_USING_PWM */

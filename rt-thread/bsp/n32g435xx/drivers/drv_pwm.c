@@ -259,25 +259,29 @@ static rt_err_t drv_pwm_set(struct n32_pwm *pwm_dev, struct rt_pwm_configuration
     {
         TIM_InitOc1(TIMx, &TIM_OCInitStructure);
         TIM_ConfigOc1Preload(TIMx, TIM_OC_PRE_LOAD_ENABLE);
-        TIM_EnableCapCmpCh(TIMx, TIM_CH_1, TIM_CAP_CMP_DISABLE);
+        if (!(pwm_dev->ch_en & (0x1 << channel)))
+            TIM_EnableCapCmpCh(TIMx, TIM_CH_1, TIM_CAP_CMP_DISABLE);
     }
     else if (channel == 2)
     {
         TIM_InitOc2(TIMx, &TIM_OCInitStructure);
         TIM_ConfigOc2Preload(TIMx, TIM_OC_PRE_LOAD_ENABLE);
-        TIM_EnableCapCmpCh(TIMx, TIM_CH_2, TIM_CAP_CMP_DISABLE);
+        if (!(pwm_dev->ch_en & (0x1 << channel)))
+            TIM_EnableCapCmpCh(TIMx, TIM_CH_2, TIM_CAP_CMP_DISABLE);
     }
     else if (channel == 3)
     {
         TIM_InitOc3(TIMx, &TIM_OCInitStructure);
         TIM_ConfigOc3Preload(TIMx, TIM_OC_PRE_LOAD_ENABLE);
-        TIM_EnableCapCmpCh(TIMx, TIM_CH_3, TIM_CAP_CMP_DISABLE);
+        if (!(pwm_dev->ch_en & (0x1 << channel)))
+            TIM_EnableCapCmpCh(TIMx, TIM_CH_3, TIM_CAP_CMP_DISABLE);
     }
     else if (channel == 4)
     {
         TIM_InitOc4(TIMx, &TIM_OCInitStructure);
         TIM_ConfigOc4Preload(TIMx, TIM_OC_PRE_LOAD_ENABLE);
-        TIM_EnableCapCmpCh(TIMx, TIM_CH_4, TIM_CAP_CMP_DISABLE);
+        if (!(pwm_dev->ch_en & (0x1 << channel)))
+            TIM_EnableCapCmpCh(TIMx, TIM_CH_4, TIM_CAP_CMP_DISABLE);
     }
 
     TIM_ConfigArPreload(TIMx, ENABLE);

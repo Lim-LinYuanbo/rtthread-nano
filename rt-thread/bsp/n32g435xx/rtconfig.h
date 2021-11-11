@@ -137,30 +137,46 @@
 // </c>
 // </h>
 
+#define RT_USING_PIN
 #define RT_USING_SERIAL
 #define RT_SERIAL_USING_DMA
 #define RT_SERIAL_RB_BUFSZ 64
-#define RT_USING_PIN
-#define RT_USING_ADC
-#define RT_USING_PWM
+//#define RT_USING_ADC
+//#define RT_USING_PWM
 
 #define BSP_USING_GPIO
 #define BSP_USING_UART
 #define BSP_USING_UART1
-#define BSP_USING_UART2
+//#define BSP_USING_UART2
 //#define BSP_USING_UART3
-#define BSP_USING_TIM3
-#define BSP_USING_PWM
-#define BSP_USING_TIM2_CH1
-#define BSP_USING_TIM2_CH2
-#define BSP_USING_TIM2_CH3
-#define BSP_USING_TIM2_CH4
-#define BSP_USING_TIM3_CH1
-#define BSP_USING_TIM3_CH2
-#define BSP_USING_TIM3_CH3
-#define BSP_USING_TIM3_CH4
-#define BSP_USING_ADC
-#define BSP_USING_ADC2
+//#define BSP_USING_TIM3
+//#define BSP_USING_PWM
+//#define BSP_USING_TIM1_CH1
+//#define BSP_USING_TIM1_CH2
+//#define BSP_USING_TIM1_CH3
+//#define BSP_USING_TIM1_CH4
+//#define BSP_USING_TIM2_CH1
+//#define BSP_USING_TIM2_CH2
+//#define BSP_USING_TIM2_CH3
+//#define BSP_USING_TIM2_CH4
+//#define BSP_USING_TIM3_CH1
+//#define BSP_USING_TIM3_CH2
+//#define BSP_USING_TIM3_CH3
+//#define BSP_USING_TIM3_CH4
+//#define BSP_USING_TIM4_CH1
+//#define BSP_USING_TIM4_CH2
+//#define BSP_USING_TIM4_CH3
+//#define BSP_USING_TIM4_CH4
+//#define BSP_USING_TIM5_CH1
+//#define BSP_USING_TIM5_CH2
+//#define BSP_USING_TIM5_CH3
+//#define BSP_USING_TIM5_CH4
+//#define BSP_USING_TIM8_CH1
+//#define BSP_USING_TIM8_CH2
+//#define BSP_USING_TIM8_CH3
+//#define BSP_USING_TIM8_CH4
+//#define BSP_USING_ADC
+//#define BSP_USING_ADC2
 
 
 // <<< end of configuration section >>>
