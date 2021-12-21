@@ -520,7 +520,6 @@ int rt_hw_pin_init(void)
 {
     return rt_device_pin_register("pin", &_N32G43X_pin_ops, RT_NULL);
 }
-INIT_BOARD_EXPORT(rt_hw_pin_init);
 
 rt_inline void pin_irq_hdr(int irqno)
 {

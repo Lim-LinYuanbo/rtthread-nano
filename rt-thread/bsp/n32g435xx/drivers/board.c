@@ -57,8 +57,14 @@ void rt_hw_board_init()
     ResetClockController_Config();
     SystemClock_Config();
 
-#ifdef RT_USING_COMPONENTS_INIT
-    rt_components_board_init();
+#ifdef RT_USING_PIN
+    int rt_hw_pin_init(void);
+    rt_hw_pin_init();
+#endif
+
+#ifdef RT_USING_SERIAL
+    int rt_hw_usart_init(void);
+    rt_hw_usart_init();
 #endif
 
 #ifdef RT_USING_CONSOLE
@@ -67,6 +73,10 @@ void rt_hw_board_init()
 
 #if defined(RT_USING_USER_MAIN) && defined(RT_USING_HEAP)
     rt_system_heap_init((void *)HEAP_BEGIN, (void *)HEAP_END);
+#endif
+
+#ifdef RT_USING_COMPONENTS_INIT
+    rt_components_board_init();
 #endif
 
     print_rcc_freq_info();
